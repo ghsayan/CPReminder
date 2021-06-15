@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">CP Reminder</string>
+    <string name="codeforces">Codeforces</string>
+    <string name="name">Name</string>
+    <string name="time">Time</string>
+</resources>

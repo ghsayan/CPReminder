@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     TableLayout tableLayout;
     TableRow tableRow;
     TextView tvName;
+    TextView tvDate;
     TextView tvTime;
     CheckBox cbNotify;
     @Override
@@ -35,27 +36,29 @@ public class MainActivity extends AppCompatActivity {
 
         //Scrap data from website
 
-        Contest contest =new Contest(0,"Codeforces Educational Round #119", "2:00 PM", false);
-        db.insertData(contest);
+//        Contest contest =new Contest(0,"Codeforces Round #120","5/5/21", "12:00 PM", false);
+//        db.insertData(contest);
     }
 
     private void showData() {
         db=new DatabaseHelper(this);
         List<Contest> contestList=db.readData();
         for(Contest ct:contestList){
-            addTableRow(ct.getID(),ct.getName(),ct.getTime(),ct.isNotify());
+            addTableRow(ct.getID(),ct.getName(),ct.getDate(),ct.getTime(),ct.isNotify());
         }
     }
 
-    private void addTableRow(int ID,String name,String time,boolean notify){
+    private void addTableRow(int ID,String name,String date,String time,boolean notify){
         tableLayout=findViewById(R.id.tableLayout);
         tableRow=(TableRow) getLayoutInflater().inflate(R.layout.table_row,null);
         tvName=tableRow.findViewById(R.id.tvName);
         tvTime=tableRow.findViewById(R.id.tvTime);
+        tvDate=tableRow.findViewById(R.id.tvDate);
         cbNotify=tableRow.findViewById(R.id.cbNotify);
 
         tvName.setText(name);
         tvTime.setText(time);
+        tvDate.setText(date);
         cbNotify.setChecked(notify);
         cbNotify.setTag(ID);
         tableLayout.addView(tableRow);

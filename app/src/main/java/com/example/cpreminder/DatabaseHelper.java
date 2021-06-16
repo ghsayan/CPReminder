@@ -17,8 +17,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_NAME="cpTable";
     public static final String COL_1="ID";
     public static final String COL_2="Name";
-    public static final String COL_3="Time";
-    public static final String COL_4="Notify";
+    public static final String COL_3="Date";
+    public static final String COL_4="Time";
+    public static final String COL_5="Notify";
 
     public DatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, 1);
@@ -26,7 +27,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE "+TABLE_NAME+"(ID INTEGER PRIMARY KEY AUTOINCREMENT , Name TEXT , Time TEXT , Notify BOOLEAN)");
+        db.execSQL("CREATE TABLE "+TABLE_NAME+"(ID INTEGER PRIMARY KEY AUTOINCREMENT , Name TEXT , Date TEXT , Time TEXT , Notify BOOLEAN)");
     }
 
     @Override
@@ -40,8 +41,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         ContentValues contentValues=new ContentValues();
         contentValues.put(COL_2,ct.getName());
-        contentValues.put(COL_3,ct.getTime());
-        contentValues.put(COL_4,ct.isNotify());
+        contentValues.put(COL_3,ct.getDate());
+        contentValues.put(COL_4,ct.getTime());
+        contentValues.put(COL_5,ct.isNotify());
 
         long res=db.insert(TABLE_NAME,null,contentValues);
         if (res == -1){
@@ -56,7 +58,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor=db.rawQuery("SELECT * FROM "+TABLE_NAME,null);
         if(cursor.moveToFirst()){
             do{
-                contestList.add(new Contest(cursor.getInt(0),cursor.getString(1),cursor.getString(2), cursor.getInt(3) == 1));
+                contestList.add(new Contest(cursor.getInt(0),cursor.getString(1),cursor.getString(2),cursor.getString(3), cursor.getInt(4) == 1));
             }while(cursor.moveToNext());
         }
         else{

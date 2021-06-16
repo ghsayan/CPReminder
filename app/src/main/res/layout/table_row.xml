@@ -1,49 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableRow  xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="?android:attr/listPreferredItemHeight"
-    android:id="@+id/tableRow"
-    android:layout_gravity="center_vertical"
-    android:divider="@color/black"
-    android:showDividers="middle">
-
-    <TextView
-        android:id="@+id/tvName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.7"
-        android:gravity="center"
-        android:padding="8dp"
-        android:text="Codeforces Round #653"
-        android:textColor="@color/black"
-        android:textSize="20sp" />
-
-    <TextView
-        android:id="@+id/tvTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.2"
-        android:gravity="center"
-        android:padding="6dp"
-        android:text="8:00 PM"
-        android:textColor="@color/black"
-        android:textSize="20sp" />
-
-    <LinearLayout
+    <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="0.1"
-        android:gravity="center"
-        android:padding="8dp">
+        android:layout_height="?android:attr/listPreferredItemHeight"
+        android:id="@+id/tableRow"
+        android:layout_gravity="center_vertical"
+        android:divider="@color/black"
+        android:showDividers="middle">
 
-        <CheckBox
-            android:id="@+id/cbNotify"
-            android:layout_width="32dp"
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:buttonTint="@color/black"
-            android:checked="true"
-            android:scaleX="1.2"
-            android:scaleY="1.2"/>
-    </LinearLayout>
+            android:layout_weight="0.64"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:padding="6dp"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
 
-</TableRow>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.24"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingHorizontal="6dp"
+                android:paddingVertical="3dp"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tvTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingHorizontal="6dp"
+                android:paddingVertical="3dp"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.12"
+            android:layout_gravity="center"
+            android:padding="8dp">
+
+            <CheckBox
+                android:id="@+id/cbNotify"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/black"
+                android:checked="true"
+                android:scaleX="1.2"
+                android:scaleY="1.2"/>
+        </LinearLayout>
+
+    </TableRow>

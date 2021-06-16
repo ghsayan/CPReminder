@@ -96,8 +96,9 @@
                     android:showDividers="middle">
 
                     <TextView
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.7"
+                        android:layout_weight="0.64"
                         android:gravity="center"
                         android:padding="8dp"
                         android:text="@string/name"
@@ -105,8 +106,9 @@
                         android:textSize="20sp" />
 
                     <TextView
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.2"
+                        android:layout_weight="0.24"
                         android:gravity="center"
                         android:padding="6dp"
                         android:text="@string/time"
@@ -114,20 +116,23 @@
                         android:textSize="20sp" />
 
                     <LinearLayout
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.12"
                         android:gravity="center"
                         android:padding="8dp">
 
                         <ImageView
                             android:id="@+id/imageView"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="start"
                             android:background="@drawable/ic_notify"
                             android:backgroundTint="@color/black" />
                     </LinearLayout>
                 </TableRow>
+
+
 
             </TableLayout>
 

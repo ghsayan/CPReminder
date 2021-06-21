@@ -3,6 +3,7 @@ package com.example.cpreminder;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -27,7 +28,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE "+TABLE_NAME+"(ID INTEGER PRIMARY KEY AUTOINCREMENT , Name TEXT , Date TEXT , Time TEXT , Notify BOOLEAN)");
+        db.execSQL("CREATE TABLE "+TABLE_NAME+"(ID INTEGER PRIMARY KEY AUTOINCREMENT , Name TEXT , Date TEXT , Time TEXT , Notify BOOLEAN , UNIQUE (Name, Date, Time) ON CONFLICT IGNORE)");
     }
 
     @Override

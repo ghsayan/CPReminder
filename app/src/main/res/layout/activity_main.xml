@@ -132,7 +132,20 @@
                     </LinearLayout>
                 </TableRow>
 
-
+                <TableRow
+                    android:id="@+id/trLoading">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.64"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:textStyle="italic"
+                        android:text="Loading Data..."
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="20sp"
+                        />
+                </TableRow>
 
             </TableLayout>
 

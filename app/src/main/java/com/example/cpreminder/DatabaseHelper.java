@@ -74,4 +74,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         db.execSQL("UPDATE "+TABLE_NAME+" SET notify = "+check+" WHERE ID = "+ID);
     }
+
+    public void deleteOldData(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        db.execSQL("DELETE FROM "+TABLE_NAME+" WHERE (Date < date('now'))");
+    }
+
+    public long getRowsCount() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return DatabaseUtils.queryNumEntries(db, TABLE_NAME);
+    }
 }

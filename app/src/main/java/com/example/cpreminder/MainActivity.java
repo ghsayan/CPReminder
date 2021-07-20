@@ -13,23 +13,36 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     DatabaseHelper db=new DatabaseHelper(this); //Database object initialised
+    List<Contest> ctList =new ArrayList<>(); //stores contest details in a list of dataclass Contest
     TableLayout tableLayout;
     TableRow tableRow;
     TextView tvName;
@@ -42,76 +55,37 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        new ScrapData().execute(); //Asynctask class to scrap the contest schedules from different websites
+        db.deleteOldData(); //Remove past contests
+        scrapData(); //Collect contest data from all websites
     }
 
-    private class ScrapData extends AsyncTask<Void, Void, Void> {
-        List<Contest> ctList =new ArrayList<>(); //stores contest details in a list of dataclass Contest
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            db.deleteOldData();
-            getCodeforces();
-
-            for(Contest c:ctList){
-                db.insertData(c); //Insert all list objects to database
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-
-            // Remove the Loading data row
-            tableLayout=findViewById(R.id.tableLayout);
-            tableRow = findViewById(R.id.trLoading);
-            tableLayout.removeView(tableRow);
-
-            // Add all rows from database into tableLayout
-            showData();
-        }
-
-        protected void getCodeforces(){
-            //Fetch name time and date from codeforces website
-            try {
-                String cfUrl="https://codeforces.com/contests";
-                Document doc = Jsoup.connect(cfUrl).get();
-
-                //Access all the rows in Current or upcoming contests table
-                Elements rows = doc.select("div.datatable").first() //take only the first 'datatable' class for current contest
-                        .select("table")
-                        .select("tbody")
-                        .select("tr");
-
-                //Skip first row as it has header names
-                for(Element row : rows.subList(1,rows.size())){
-                    Elements td = row.select("td");
-
-                    //Using DateTimeFormatter convert the string to displayable format
-                    DateTimeFormatter formatter
-                            = DateTimeFormatter.ofPattern("MMM/dd/yyyy HH:mm", Locale.ENGLISH);
-                    DateTimeFormatter formatted
-                            = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm", Locale.ENGLISH);
-                    String formattedDate = LocalDateTime.parse(td.get(2).text(), formatter)
-                            .atOffset(ZoneOffset.ofHours(3)) // Offset set to Moscow,Russia
-                            .atZoneSameInstant(ZoneId.systemDefault()) // Converts to system time zone
-                            .format(formatted); // Change to different format
-
-                    // name is the text from table-data 'td[0]' and time is 'td[2]'
-                    // formattedDate is split into two strings for date and time
-                    Contest ct =new Contest(0,td.get(0).text(),formattedDate.split(" ")[0],formattedDate.split(" ")[1],false);
-                    ctList.add(ct);
+    private void scrapData(){
+        //Collect Codeforces contest data
+        new CodeforcesData().getCodeforces(new CodeforcesData.UpdateList(){
+            //Returns contest list after its completely fetched
+            @Override
+            public void onSuccess(List<Contest> cf){
+                ctList.addAll(cf);
+                for(Contest c:ctList){
+                    db.insertData(c); //Insert all list objects to database
                 }
-//                Contest ct1 =new Contest(0,"Cf Custom contest 1","2021-07-01","11:00",false);
-//                ctList.add(ct1);
-            } catch (IOException e){
-                Log.i("text",e.getMessage());
+                showData(); // Add all rows from database into tableLayout
             }
-        }
+            @Override
+            public void onError(String e){
+                Log.i("test",e);
+            }
+        },this);
+
+        // TODO: Implement other websites
     }
 
     private void showData() {
+        // Remove the Loading data row
+        tableLayout=findViewById(R.id.tableLayout);
+        tableRow = findViewById(R.id.trLoading);
+        tableLayout.removeView(tableRow);
+
         List<Contest> contestList=db.readData(); // create a Contest class list from the values from database
         for(Contest ct:contestList){
             addTableRow(ct); // add each row into the tableLayout
@@ -144,26 +118,36 @@ public class MainActivity extends AppCompatActivity {
         //Set onCheckListener for all the checkboxes in the column and change the values respectively in database according to their ID (Auto Increment)
         cbNotify.setOnCheckedChangeListener((buttonView, isChecked) -> {
             db.updateData((int) buttonView.getTag(), isChecked ? 1 : 0);
-            if(isChecked){
-                Intent intent = new Intent(MainActivity.this,AlarmReceiver.class);
-                intent.putExtra("id",ct.getID());
-                intent.putExtra("name",ct.getName());
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this,ct.getID(),intent,PendingIntent.FLAG_UPDATE_CURRENT);
-
-                AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-                Calendar calendar= Calendar.getInstance();
-                calendar.set(Integer.parseInt(date[0]), Integer.parseInt(date[1])-1, Integer.parseInt(date[2]), Integer.parseInt(time[0]), Integer.parseInt(time[1]),0);
-                alarmManager.set(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),pendingIntent);
-            }
-            else{
-                Intent intent = new Intent(MainActivity.this,AlarmReceiver.class);
-                intent.putExtra("id",ct.getID());
-                intent.putExtra("name",ct.getName());
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this,ct.getID(),intent,PendingIntent.FLAG_UPDATE_CURRENT);
-
-                AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-                alarmManager.cancel(pendingIntent);
-            }
+            setAlarm(ct,isChecked,time,date);
         });
+    }
+
+    private void setAlarm(Contest ct, boolean isChecked, String[] time, String[] date){
+
+        if(isChecked){
+            Intent intent = new Intent(MainActivity.this,AlarmReceiver.class);
+            intent.putExtra("id",ct.getID());
+            intent.putExtra("name",ct.getName());
+            //Pending intent with the id of that specific contest
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this,ct.getID(),intent,PendingIntent.FLAG_UPDATE_CURRENT);
+
+            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+            //Set date and time in calendar object
+            Calendar calendar= Calendar.getInstance();
+            calendar.set(Integer.parseInt(date[0]), Integer.parseInt(date[1])-1, Integer.parseInt(date[2]), Integer.parseInt(time[0]), Integer.parseInt(time[1]),0);
+            alarmManager.set(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),pendingIntent);
+        }
+
+        else{
+            Intent intent = new Intent(MainActivity.this,AlarmReceiver.class);
+            intent.putExtra("id",ct.getID());
+            intent.putExtra("name",ct.getName());
+            //Get the same pending intent used to create the alarm
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this,ct.getID(),intent,PendingIntent.FLAG_UPDATE_CURRENT);
+
+            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+            alarmManager.cancel(pendingIntent); //Removes the alarm if unchecked
+        }
+
     }
 }

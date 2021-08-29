@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:title="Refresh"
+        android:id="@+id/ibRefresh"
+        android:icon="@drawable/ic_refresh"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:title="Settings"
+        android:id="@+id/ibSettings"
+        android:icon="@drawable/ic_settings"
+        app:showAsAction="always">
+
+        <menu>
+            <group
+                android:id="@+id/remRadio"
+                android:checkableBehavior="single">
+                <item
+                    android:id="@+id/rem5"
+                    android:title="Remind before 5 mins"/>
+                <item
+                    android:id="@+id/rem15"
+                    android:title="Remind before 15 mins"/>
+                <item
+                    android:id="@+id/rem30"
+                    android:title="Remind before 30 mins"/>
+                <item
+                    android:id="@+id/rem60"
+                    android:title="Remind before 60 mins"/>
+            </group>
+        </menu>
+
+    </item>
+</menu>

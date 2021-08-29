@@ -18,7 +18,8 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         int id=intent.getIntExtra("id",0);
-        String name=intent.getStringExtra("name")+" starts in 15 mins";
+        int rem=intent.getIntExtra("rem",15);
+        String name=intent.getStringExtra("name")+" starts in "+rem+" minutes.";
 
         Intent mainIntent = new Intent(context, MainActivity.class);
         PendingIntent contentIntent = PendingIntent.getActivity(context, 0, mainIntent, 0);

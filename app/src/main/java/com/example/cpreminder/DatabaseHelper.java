@@ -80,6 +80,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DELETE FROM "+TABLE_NAME+" WHERE (Date < date('now'))");
     }
 
+    public void deleteTable() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("delete from "+ TABLE_NAME);
+        db.close();
+    }
+
     public long getRowsCount() {
         SQLiteDatabase db = this.getReadableDatabase();
         return DatabaseUtils.queryNumEntries(db, TABLE_NAME);

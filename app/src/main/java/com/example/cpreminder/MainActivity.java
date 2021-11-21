@@ -137,7 +137,6 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(MainActivity.this, "Refreshing...", Toast.LENGTH_SHORT).show();
         tableLayout=findViewById(R.id.tableLayout);
         tableLayout.removeViews(1, Math.max(0, tableLayout.getChildCount() - 1)); //Remove all rows except header
-        db.deleteTable(); //Remove past contests
         scrapData(); //Collect contest data from all websites
     }
 

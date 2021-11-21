@@ -32,7 +32,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
 
         NotificationCompat.Builder builder= new NotificationCompat.Builder(context,CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setSmallIcon(R.drawable.cp_icon)
                 .setContentTitle("Contest Reminder")
                 .setContentText(name)
                 .setContentIntent(contentIntent)

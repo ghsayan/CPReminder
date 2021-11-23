@@ -11,6 +11,7 @@ import android.os.Build;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 
 public class AlarmReceiver extends BroadcastReceiver {
     private static final String CHANNEL_ID="Contest Notification";
@@ -32,12 +33,18 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
 
         NotificationCompat.Builder builder= new NotificationCompat.Builder(context,CHANNEL_ID)
-                .setSmallIcon(R.drawable.cp_icon)
                 .setContentTitle("Contest Reminder")
                 .setContentText(name)
                 .setContentIntent(contentIntent)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setAutoCancel(true);
+
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder.setSmallIcon(R.drawable.cp_icon2);
+            builder.setColor(ContextCompat.getColor(context, R.color.white));
+        } else {
+            builder.setSmallIcon(R.drawable.cp_icon);
+        }
 
         notificationManager.notify(id,builder.build());
     }

@@ -6,12 +6,14 @@
         android:title="Refresh"
         android:id="@+id/ibRefresh"
         android:icon="@drawable/ic_refresh"
+        app:iconTint="@color/black"
         app:showAsAction="ifRoom" />
 
     <item
         android:title="Settings"
         android:id="@+id/ibSettings"
         android:icon="@drawable/ic_settings"
+        app:iconTint="@color/black"
         app:showAsAction="always">
 
         <menu>
@@ -20,7 +22,7 @@
                 android:checkableBehavior="single">
                 <item
                     android:id="@+id/rem5"
-                    android:title="Remind before 5 mins"/>
+                    android:title="Remind before 5 mins" />
                 <item
                     android:id="@+id/rem15"
                     android:title="Remind before 15 mins"/>

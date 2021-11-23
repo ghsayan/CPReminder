@@ -3,7 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Study/Android Projects/CPReminder/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/Study/Android Projects/CPReminder/app/src/main/res/drawable/table_shape.xml" value="0.2484375" />
+        <entry key="..\:/Study/Android Projects/CPReminder/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Study/Android Projects/CPReminder/app/src/main/res/layout/table_row.xml" value="0.1" />
         <entry key="..\:/Study/Android Projects/CPReminder/app/src/main/res/menu/menu_items.xml" value="0.24166666666666667" />
       </map>
     </option>

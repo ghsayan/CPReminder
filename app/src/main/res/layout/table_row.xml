@@ -16,7 +16,7 @@
             android:layout_gravity="center"
             android:padding="6dp"
             android:textColor="@color/black"
-            android:textSize="18sp" />
+            android:textSize="14sp" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -33,7 +33,7 @@
                 android:paddingHorizontal="6dp"
                 android:paddingVertical="3dp"
                 android:textColor="@color/black"
-                android:textSize="18sp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/tvTime"
@@ -43,11 +43,11 @@
                 android:paddingHorizontal="6dp"
                 android:paddingVertical="3dp"
                 android:textColor="@color/black"
-                android:textSize="18sp" />
+                android:textSize="14sp" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="10dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.12"
             android:layout_gravity="center"
